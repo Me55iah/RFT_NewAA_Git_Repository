@@ -1,0 +1,99 @@
+
+// MOTOR
+// 1)
+http://${testenv}/aaservlet/InsuranceXMLQuote?xmlString=%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%3CAAInsurance%20xsi%3AnoNamespaceSchemaLocation%3D%22http%3A//10.192.51.16%3A80/schemas/AAInsurance.xsd%22%20coverstartdate%3D%22${coverstartdate_yyyy}-${coverstartdate_mm}-${coverstartdate_dd}%22%20coverperiod%3D%220%22%20suppressmailings%3D%22N%22%20affinity%3D%22${affinity}%22%20volexcess%3D%2204X%22%20xmlns%3Axsi%3D%22http%3A//www.w3.org/2001/XMLSchema-instance%22%20xmlns%3Aref%3D%22http%3A//callconnection.co.uk/referencedata%22%20xmlns%3Ahelper%3D%22urn%3AXsltHelper%22%20xmlns%3AabiManager%3D%22urn%3AAbiCodeManager%22%3E%3Cmotor%3E%3Cquotetype%20code%3D%22${quotetype_code}%22%3E${quotetype_text}%3C/quotetype%3E%3Clevelofcover%20code%3D%22${levelofcover_code}%22%3E${levelofcover_text}%3C/levelofcover%3E%3Cresponse%20code%3D%2209%22%3EPrice%20comparison%20website%3C/response%3E%3Cpreviousinsurer%20code%3D%22500%22%20expiry%3D%22${expiry_yyyy}-${expiry_mm}-${expiry_dd}%22%20yearsnoclaims%3D%22${yearsnoclaims}%22%3EUnknown/Other%3C/previousinsurer%3E%3Cproposer%3E%3Cvehicleusage%20code%3D%22${vehicleusage_code}%22%3E${vehicleusage_text}%3C/vehicleusage%3E%3Caddress%20line1%3D%22${address_line1}%22%20line2%3D%22${address_line2}%22%20line3%3D%22${address_line3}%22%20line4%3D%22${address_line4}%22%20postcode%3D%22${postcode}%22%20/%3E%3Ccontact%3E%3Ctelephone%20type%3D%22home%22%3E01234567890%3C/telephone%3E%3Cemail%20type%3D%22home%22%3E${homeemail}%3C/email%3E%3C/contact%3E%3Cdriver%20dob%3D%22${dob_yyyy}-${dob_mm}-${dob_dd}%22%20othervehicle%3D%22N%22%3E%3Cname%20firstname%3D%22${firstname}%22%20lastname%3D%22${surname}%22%20title%3D%22${title}%22%20/%3E%3Cmaritalstatus%20code%3D%222%22%3ESingle%3C/maritalstatus%3E%3Coccupation%3E%3Cfulltimeocc%20code%3D%22264%22%3EAccounts%20Clerk%3C/fulltimeocc%3E%3Cfulltimebus%20code%3D%22304%22%3ECourier%20Services%3C/fulltimebus%3E%3C/occupation%3E%3Clicence%20code%3D%221%22%20held%3D%229%22%20unit%3D%22Y%22%20/%3E%3C/driver%3E%3C/proposer%3E%3Cvehicle%20purchasedate%3D%222008-05-01%22%20value%3D%22999%22%20annualmileage%3D%223000%22%20registration%3D%22E30MER%22%20regyear%3D%221988%22%3E%3Cwherekept%20code%3D%222%22%20/%3E%3Cabi%20code%3D%2253536402%22%3E1988%2C%20GOLF%20GTI%2C%201781cc%2C%205%20Door%2C%20Petrol%2C%20Manual%3C/abi%3E%3C/vehicle%3E%3C/motor%3E%3C/AAInsurance%3E
+
+
+
+
+
+// 2)
+// Retrieve the quote as an aggregator, presenting the quote landing page to the user.
+https://${testenv}//car-insurance//buy//SeleniumSessionInvalidate.jsp
+// BYPASS LANDING PAGE
+https://${testenv}/car-insurance/n_quote_retrieve.jsp?QUOTEREF=${quoteref}&AffinityID=${affinity}&surname=${surname}&postcode=${postcode}&PNCD=N&DOB=${dob_dd}-${dob_mm}-${dob_yyyy}
+
+// 3)
+// Retrieve the quote as an aggregator, presenting the quote landing page to the user.
+https://${testenv}//car-insurance//buy//SeleniumSessionInvalidate.jsp
+// VIA LANDING PAGE
+https://${testenv}/car-insurance/n_quote_retrieve.jsp?AffinityID=${affinity}&QUOTEREF=${quoteref}
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>Motor - Retrieve As Aggregator Enter Landing Page</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">Motor - Retrieve As Aggregator Enter Landing Page</td></tr>
+</thead><tbody>
+<!--Retrieve the quote as an aggregator, presenting the quote landing page to the user.-->
+<tr>
+	<td>open</td>
+	<td>https://${testenv}//car-insurance//buy//SeleniumSessionInvalidate.jsp</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>https://${testenv}/car-insurance/n_quote_retrieve.jsp?AffinityID=${affinity}&amp;QUOTEREF=${quoteref}</td>
+	<td></td>
+</tr>
+<!-- Check that this is the aggregator landing page and for the aggregator we started off with.-->
+<!--CR9633 Maintain pre-population of quote reference following errors in quote retrieval.-->
+<!--To do this, enter some invalid details on the retrieval form then ensure that the -->
+<tr>
+	<td>assertTextPresent</td>
+	<td>${quoteref}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTextNotPresent</td>
+	<td>${noinstalments} monthly payments</td>
+	<td></td>
+</tr>
+<!--CR9666 - Check message to allow customers to opt out of add-ons over the phone when add-ons are compulsory. Depends on whether the affinity under test is configured to use optional addons.-->
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['optionaladdonsMotor'] == &quot;OFF&quot;</td>
+	<td>checkOptionalAddonsOff</td>
+</tr>
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['optionaladdonsMotor'] == &quot;ON&quot;</td>
+	<td>checkOptionalAddonsOn</td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>checkOptionalAddonsOff</td>
+	<td></td>
+</tr>
+<tr>
+	<td>gotolabel</td>
+	<td>endOfTestCase</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>checkOptionalAddonsOn</td>
+	<td></td>
+</tr>
+<tr>
+	<td>gotolabel</td>
+	<td>endOfTestCase</td>
+	<td></td>
+</tr>
+<!--CR9666 - END.-->
+<tr>
+	<td>label</td>
+	<td>endOfTestCase</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>
